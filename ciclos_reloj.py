@@ -1,3 +1,4 @@
+#Ciclos de reloj y tiempo de CPU
 import time
 import os
 
