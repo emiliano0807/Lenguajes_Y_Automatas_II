@@ -48,4 +48,3 @@ if __name__ == "__main__":
         print(resultado)
     else:
         print("No se encontró una solución.")
-
