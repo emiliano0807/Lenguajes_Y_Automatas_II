@@ -1,3 +1,6 @@
+#DFS recursivo
+# Busqueda en profundidad (Depth First Search)
+# Busqueda en profundidad con recursividad
 from Arbol import Nodo
 
 def buscar_solucion_BFS_rec(nodo_incial, solucion, visitados):
