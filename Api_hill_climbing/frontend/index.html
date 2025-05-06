@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>TSP con Hill Climbing</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            margin-top: 40px;
+            font-size: 36px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 16px;
+            background-color: #1abc9c;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        button:hover {
+            background-color: #16a085;
+        }
+
+        #distancia {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #f1c40f;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            text-align: left;
+        }
+
+        li {
+            background: rgba(255, 255, 255, 0.1);
+            margin: 5px 0;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: transform 0.2s;
+        }
+
+        li:hover {
+            transform: translateX(5px);
+            background: rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <h1>Ruta TSP con Hill Climbing</h1>
+    <div class="container">
+        <button onclick="obtenerRuta()">Generar Ruta</button>
+        <p id="distancia">Distancia Total: —</p>
+        <ul id="listaRuta"></ul>
+    </div>
+
+    <script>
+        async function obtenerRuta() {
+            const res = await fetch('http://localhost:5000/tsp');
+            const data = await res.json();
+
+            document.getElementById('distancia').innerText = 
+                `Distancia Total: ${data.distancia_total.toFixed(2)} km`;
+
+            const lista = document.getElementById('listaRuta');
+            lista.innerHTML = '';
+            data.ruta.forEach((ciudad, i) => {
+                const li = document.createElement('li');
+                li.textContent = `${i + 1}. ${ciudad}`;
+                lista.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html> 
