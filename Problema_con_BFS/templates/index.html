@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resolver Problema con BFS</title>
+    <style>
+        body {
+            background-color: rgb(40, 100, 100);
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .resultado-container {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .resultado-container span {
+            background-color: #f0f0f0;
+            padding: 5px 5px;
+            border-radius: 5px;
+        }
+        input {
+            display: block;
+            margin: 5px 5px;
+            padding: 10px 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            background-color: rgb(240, 240, 240);
+        }
+        button{
+            padding: 5px 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            color: rgb(0, 0, 0);
+            cursor: pointer;
+        }
+        h2 {
+            color: #fff;
+        }
+        label {
+            color: #fff;
+        }
+    </style>
+    <script>
+        async function enviarDatos() {
+            let estadoInput = document.getElementById("estado_inicial").value;
+            let solucionInput = document.getElementById("solucion").value;
+            let estadoLista = estadoInput.split(',').map(Number);
+            let solucionLista = solucionInput.split(',').map(Number);
+            
+            let response = await fetch('/resolver', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({estado_inicial: estadoLista, solucion: solucionLista})
+            });
+            
+            let resultado = await response.json();
+            
+            let resultadoContainer = document.getElementById("resultado");
+            resultadoContainer.innerHTML = "";
+            
+            if (resultado.solucion) {
+                resultado.solucion.forEach(paso => {
+                    let span = document.createElement("span");
+                    span.textContent = paso.join(" ");
+                    resultadoContainer.appendChild(span);
+                });
+            } else {
+                resultadoContainer.textContent = "No se encontró solución";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h2>Resolver Problema con BFS</h2>
+    <div class="container">
+        <label for="estado_inicial">Estado inicial:</label>
+        <input type="text" id="estado_inicial" placeholder="Ej: 4,2,3,1">
+    </div>
+    <div class="container">
+        <label for="solucion">Estado Final:</label>
+        <input type="text" id="solucion" placeholder="Ej: 1,2,3,4">
+    </div>
+    <button onclick="enviarDatos()">Resolver</button>
+    <div id="resultado" class="resultado-container"></div>
+</body>
+</html>
