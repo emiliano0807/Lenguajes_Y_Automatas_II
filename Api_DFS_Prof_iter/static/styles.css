@@ -1,0 +1,19 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 20px;
+    background-color: white;
+}
+form {
+    margin-bottom: 20px;
+    background-color: aqua;
+}
+input, button {
+    padding: 10px;
+    margin: 5px;
+}
+button {
+    cursor: pointer;
+    background-color: green;
+    color: red;
+}

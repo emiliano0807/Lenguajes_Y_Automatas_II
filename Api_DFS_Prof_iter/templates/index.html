@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Búsqueda de Rutas</title>
+    <link rel="icon" href="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1869px-Python-logo-notext.svg.png" type="image/png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Buscar Ruta entre Ciudades</h1>
+    <form id="rutaForm">
+        <label for="inicio">Estado Inicial:</label>
+        <input type="text" id="inicio" required>
+        
+        <label for="fin">Estado Final:</label>
+        <input type="text" id="fin" required>
+        
+        <button type="submit">Buscar</button>
+    </form>
+
+    <h2>Resultado:</h2>
+    <p id="resultado"></p>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
