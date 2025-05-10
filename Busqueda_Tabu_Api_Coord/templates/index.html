@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>TSP con Búsqueda Tabú</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Ruta óptima usando Búsqueda Tabú</h1>
+      <button onclick="resolverRuta()">Calcular Ruta</button>
+      <div id="resultado"></div>
+    </div>
+
+    <script>
+      async function resolverRuta() {
+        const res = await fetch("/resolver");
+        const data = await res.json();
+        document.getElementById("resultado").innerHTML = `
+        <p><strong>Ruta:</strong> ${data.ruta.join(" ➝ ")}</p>
+        <p><strong>Distancia total:</strong> ${data.costo.toFixed(2)}</p>
+      `;
+      }
+    </script>
+  </body>
+</html>
