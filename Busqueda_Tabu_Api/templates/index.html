@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Búsqueda Tabú - TSP</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Búsqueda Tabú para el TSP</h1>
+      <textarea
+        id="matriz"
+        rows="6"
+        placeholder="Ejemplo: [[0,10,15],[10,0,20],[15,20,0]]"
+      ></textarea>
+      <button onclick="resolver()">Resolver</button>
+      <div id="resultado"></div>
+    </div>
+
+    <script>
+      async function resolver() {
+        const input = document.getElementById("matriz").value;
+        let matriz;
+        try {
+          matriz = JSON.parse(input);
+        } catch (e) {
+          alert("Formato inválido");
+          return;
+        }
+
+        const response = await fetch("/resolver", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ matriz }),
+        });
+
+        const data = await response.json();
+        document.getElementById("resultado").innerHTML = `
+        <p><strong>Ruta óptima:</strong> ${data.ruta.join(" ➝ ")}</p>
+        <p><strong>Costo total:</strong> ${data.costo}</p>
+      `;
+      }
+    </script>
+  </body>
+</html>
