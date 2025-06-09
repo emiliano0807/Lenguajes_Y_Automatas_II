@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Algoritmo Genético 3SAT</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+  <div class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="bg-white shadow-xl rounded-lg p-8 max-w-xl w-full">
+      <h1 class="text-3xl font-bold text-center mb-6 text-indigo-600">Algoritmo Genético 3SAT</h1>
+
+      <form id="form" class="space-y-4">
+        <div>
+          <label for="num_vars" class="block text-sm font-medium">Número de variables</label>
+          <input type="number" id="num_vars" value="10" class="mt-1 p-2 w-full border rounded" />
+        </div>
+        <div>
+          <label for="max_iter" class="block text-sm font-medium">Máximo de iteraciones</label>
+          <input type="number" id="max_iter" value="10" class="mt-1 p-2 w-full border rounded" />
+        </div>
+        <div>
+          <label for="max_poblacion" class="block text-sm font-medium">Tamaño de la población</label>
+          <input type="number" id="max_poblacion" value="50" class="mt-1 p-2 w-full border rounded" />
+        </div>
+
+        <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700 transition">Ejecutar Algoritmo</button>
+      </form>
+
+      <div id="resultado" class="mt-6 hidden">
+        <h2 class="text-xl font-semibold text-gray-700 mb-4">Resultados:</h2>
+        <p><strong>Solución objetivo:</strong> <span id="solucion"></span></p>
+        <p><strong>Mejor gen:</strong> <span id="mejor"></span></p>
+        <p><strong>Adaptación:</strong> <span id="adaptacion"></span></p>
+      </div>
+
+      <div id="cargando" class="mt-6 text-center text-gray-500 hidden">
+        Procesando algoritmo genético...
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('form');
+    const resultado = document.getElementById('resultado');
+    const solucion = document.getElementById('solucion');
+    const mejor = document.getElementById('mejor');
+    const adaptacion = document.getElementById('adaptacion');
+    const cargando = document.getElementById('cargando');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      resultado.classList.add('hidden');
+      cargando.classList.remove('hidden');
+
+      const num_vars = parseInt(document.getElementById('num_vars').value);
+      const max_iter = parseInt(document.getElementById('max_iter').value);
+      const max_poblacion = parseInt(document.getElementById('max_poblacion').value);
+
+      try {
+        const response = await fetch('http://localhost:5000/resolver', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ num_vars, max_iter, max_poblacion })
+        });
+
+        const data = await response.json();
+
+        solucion.textContent = data.solucion_objetivo.join(', ');
+        mejor.textContent = data.mejor_gen.join(', ');
+        adaptacion.textContent = data.adaptacion;
+
+        cargando.classList.add('hidden');
+        resultado.classList.remove('hidden');
+      } catch (error) {
+        cargando.textContent = '❌ Error al conectar con la API.';
+        console.error(error);
+      }
+    });
+  </script>
+</body>
+</html>
